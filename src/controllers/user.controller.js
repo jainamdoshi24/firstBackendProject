@@ -25,8 +25,8 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Check for images and avatar
-    const avatarLocalPath = req.files?.avatar[0]?.path?.$or.replace(/\\/g, "/"); // Handle Windows backslashes in file paths
-    const coverImageLocalPath = req.files?.coverImage[0]?.path?.$or.replace(/\\/g, "/"); // Handle Windows backslashes in file paths
+    const avatarLocalPath = req.files?.avatar[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage[0]?.path;
     console.log("Received files:", req.files);
     if(!avatarLocalPath) {
         throw new apiError("Avatar image is required", 400);
