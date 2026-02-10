@@ -17,7 +17,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Check if user already exists : username or email already exists
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{username}, {email}]    // $or operator can check for multiple conditions, if any of the condition is true, it will return the document
     })
     if(existedUser) {
@@ -25,8 +25,8 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Check for images and avatar
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    const avatarLocalPath = req.files?.avatar[0]?.path?.$or.replace(/\\/g, "/"); // Handle Windows backslashes in file paths
+    const coverImageLocalPath = req.files?.coverImage[0]?.path?.$or.replace(/\\/g, "/"); // Handle Windows backslashes in file paths
     console.log("Received files:", req.files);
     if(!avatarLocalPath) {
         throw new apiError("Avatar image is required", 400);
